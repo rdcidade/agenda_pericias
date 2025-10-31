@@ -1,0 +1,40 @@
+{% extends 'agenda_pericias/base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container-fluid py-5">
+    <h2 class="text-center mb-3" style="font-size: 26px; color: black; padding-top: 5%;">Envio de Pauta de Perícias</h2>
+    <p class="text-center mb-4" style="font-size: 15px;">Selecione o mês e ano desejados e clique em "Enviar Pautas" para notificar os peritos.</p>
+
+    <div class="d-flex justify-content-center">
+        <form method="POST" action="{% url 'enviar_pauta' %}" class="p-4 rounded shadow-sm bg-light" style="max-width: 500px; width: 100%;">
+            {% csrf_token %}
+
+            <div class="mb-3 text-center">
+                <label for="mes" class="form-label fw-bold">Mês (1-12):</label>
+                <input type="number" name="mes" id="mes" class="form-control text-center mx-auto"
+                       style="max-width: 150px;" min="1" max="12" required placeholder="Ex: 10">
+            </div>
+
+            <div class="mb-4 text-center">
+                <label for="ano" class="form-label fw-bold">Ano:</label>
+                <input type="number" name="ano" id="ano" class="form-control text-center mx-auto"
+                       style="max-width: 150px;" required placeholder="Ex: 2025">
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg px-4">Enviar Pautas</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<script>
+    // Foco inicial no campo mês
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('mes').focus();
+    });
+</script>
+
+{% endblock %}

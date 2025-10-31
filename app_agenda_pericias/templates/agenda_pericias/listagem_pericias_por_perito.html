@@ -1,0 +1,62 @@
+{% extends 'agenda_pericias/base.html' %}
+{% block content %}
+{% load static %} <!-- Nova linha que carrega os arquivos estáticos -->  
+<div class="container-fluid" style="padding-top: 5%; padding-bottom: 5%;">
+    {% if view_origem == 'dia' %}
+        <h2 style="text-align: center; margin-top: 10px; font-size: 25px; color:black;">
+            Perícias Agendadas do Dia
+        </h2>
+    {% elif view_origem == 'mes' %}
+        <h2 style="text-align: center; margin-top: 10px; font-size: 25px; color:black;">
+            Perícias Agendadas do Mês
+        </h2>
+    {% else %}
+        <h2 style="text-align: center; margin-top: 10px; font-size: 25px; color:black;">
+            Perícias Agendadas do Mês
+        </h2>
+    {% endif %}
+    <form name="form_filtrar_pericias" id="formFiltrar" method="post">
+        {% csrf_token %}
+        <table class="table table-bordered table-striped" style="font-size: 15px; white-space: nowrap">
+            <tr style="text-align:center; vertical-align: middle;">
+                <td hidden>id</td>
+                <th>Data Perícia</th>
+                <th>Perito</th>
+                <th>Periciado</th>
+                <th>Processo</th>
+                <th>Especialidade</th>
+                <th>Situação</th>
+                <th>Compareceu?</th>
+                <th>Entrada</th>
+                <th>Saída</th>
+            </tr>
+            {% for pericia in pericias %}
+            <tr style="font-size: 13px; line-height: 1px; text-rendering: auto; vertical-align: middle;">
+                <td hidden>{{ pericia.id }}</td>
+                <td>{{ pericia.data_pericia }}</td>
+                <td>{{ pericia.perito }}</td>
+                <td>{{ pericia.periciado }}</td>
+                <td>{{ pericia.processo }}</td>
+                <td>{{ pericia.especialidade }}</td>
+                <td>{{ pericia.situacao_pericia }}</td>
+                <td style="text-align: center"><input type="checkbox" id="id_compareceu_pericia" name="compareceu_pericia" {% if pericia.compareceu_pericia %}checked{% endif %}></td>
+                <td>{{ pericia.hora_entrada|date:"H:i" }}</td>
+                <td>{{ pericia.hora_saida|date:"H:i" }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</div>
+
+<footer>
+    <form method="GET">
+      <div position="fixed" class="container-fluid">
+          <a style="text-decoration: none; color: white; font-size: small;">
+            <a style="text-decoration: none; color: white; font-size: small;">
+                Data: <input type="text" placeholder="" name="search" id="search" style="width: 120px; height: 25px; text-align: center;color: black;">
+                <button class="btn btn-primary btn-sm" type="submit" id="button-addon1">Buscar/Limpar</button>
+              </a>
+      </div>
+    </form>
+</footer>
+{% endblock %}

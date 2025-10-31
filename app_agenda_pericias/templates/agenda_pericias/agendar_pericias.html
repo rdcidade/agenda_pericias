@@ -1,0 +1,125 @@
+{% extends 'agenda_pericias/base.html' %}
+{% block content %}
+<div class="container" style="padding-top: 5%;">
+  <h2 style="text-align: center; margin-top: 10px; font-size: 25px; color: black;">Agendar Perícias</h2>  
+  <form style="margin-top: 10px; margin-left: 10px;" class="row g-3" name="form_agendar_pericias" id="formAgendar" method="post">
+    {% csrf_token %}
+      <div class="col-md-6">
+        <label for="perito" class="form-label">Perito</label>
+        <select class="form-control form-control-sm" style="height: 35px;" name="perito" id="perito">
+          {% for perito in peritos %}
+            <option value="{{ perito.nome_perito }}">{{ perito.nome_perito }}</option>
+          {% endfor %}
+        </select>        
+      </div>
+      <div class="col-md-6">
+        <label for="periciado" class="form-label">Periciado</label>
+        <input type="text" class="form-control form-control-sm" id="periciado" name="periciado" required>
+      </div>
+      <div class="col-md-3">
+        <label for="cpf_parte" class="form-label">CPF da parte</label>
+        <input type="text" class="form-control form-control-sm" id="cpf_parte" name="cpf_parte" required>
+      </div>
+      <div class="col-md-3">
+        <label for="processo" class="form-label">Processo</label>
+        <input type="text" class="form-control form-control-sm" id="processo" name="processo" placeholder="0000000-00.0000.0.00.0000" required>
+      </div>
+      <div class="col-md-6">
+        <label for="especialidade" class="form-label">Especialidade</label>
+        <input type="text" class="form-control form-control-sm" id="especialidade" name="especialidade"  placeholder="Ortopedia" required>
+      </div>
+      <div class="col-md-4">
+        <label for="situacao_pericia" class="form-label">Situação da Pericia</label>
+        <select id="situacao_pericia" class="form-control form-control-sm" style="height: 35px;" name="situacao_pericia" required>
+          <option selected>Escolher...</option>
+          <option value="Designada">Designada</option>
+          <option value="Outros">Outros</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label for="data_agendamento" class="form-label">Data Perícia</label>
+        <input type="text" id="data_agendamento" style="height: 35px;" name="data_agendamento">
+      </div>
+      <div class="col-md-1">
+        <label for="hora_agendamento" class="form-label">Hora</label>
+        <input type="text" class="form-control form-control-sm" style="height: 35px;" id="hora_agendamento" name="hora_agendamento" placeholder="00:00">
+      </div>
+      <div class="col-md-2">
+        <label for="data_pericia" class="form-label">Data Agendamento</label>
+        <input type="text" class="form-control form-control-sm" style="height: 35px;" id="data_pericia" name="data_pericia" readonly>
+              <a><input hidden type="text" name="jurisdicao" id="jurisdicao" value='{{ subsecao }}'></a> 
+        <a><input hidden type="text" name="usuario" id="usuario" value='{{ usuario }}'></a> 
+      </div>
+      
+      <p>
+      <div class="col-12" style="text-align: center;">
+        <button type="submit" class="btn btn-primary">Atualizar</button>
+      </div><P></P>
+      {% if messages %}
+      <div style="text-align: center; color: crimson;">
+          {% for message in messages %}
+              <a>{{ message }}</a>
+          {% endfor %}
+      </div>
+      {% endif %}
+    </form>
+  </div>
+  
+  <script> // mascara de entrada
+    $('#hora_agendamento').mask('00:00');
+    $('#cpf_parte').mask('000.000.000-00')
+    $('#processo').mask('0000000-00.0000.0.00.0000')
+    $('#data_agendamento').mask('00/00/0000');
+  </script>
+
+  <script>
+    // Função para salvar temporariamente as informações do formulário de cadastro
+    function salvarCadastro() {
+        // Obter os valores dos campos do formulário
+        var data_pericia = document.getElementById('data_pericia').value;
+        var perito = document.getElementById('perito').value;
+        var periciado = document.getElementById('periciado').value;
+        var cpf_parte = document.getElementById('cpf_parte').value;
+        var processo = document.getElementById('processo').value;
+        var especialidade = document.getElementById('especialidade').value;
+        var situacao_pericia = document.getElementById('situacao_pericia').value;
+        var compareceu_pericia = document.getElementById('compareceu_pericia').value;
+        var hora_entrada = document.getElementById('hora_entrada').value;
+        var hora_saida = document.getElementById('hora_saida').value;
+        
+        // Armazenar temporariamente as informações na sessionStorage
+        localStorage.setItem('data_pericia', data_pericia);
+        localStorage.setItem('perito', perito);
+        localStorage.setItem('periciado', periciado);
+        localStorage.setItem('cpf_parte', cpf_parte);
+        localStorage.setItem('processo', processo);
+        localStorage.setItem('especialidade', especialidade);
+        localStorage.setItem('situacao_pericia', situacao_pericia);
+        localStorage.setItem('compareceu_pericia', compareceu_pericia);
+        localStorage.setItem('hora_entrada', hora_entrada);
+        localStorage.setItem('hora_saida', hora_saida);
+        
+        // Redirecionar para a página de confirmação
+        window.location.href="{% url 'confirmacao' %}";
+
+        // Retorne false para impedir o envio padrão do formulário
+        return false;
+    }
+</script>
+<script>
+  // Função para atualizar o valor do campo data_agendamento
+  function atualizarDataAgendamento() {
+    var dataAgendamento = document.getElementById("data_agendamento").value;
+    var horaEntrada = document.getElementById("hora_agendamento").value;
+    
+    if (dataAgendamento && horaEntrada) {
+      document.getElementById("data_pericia").value = dataAgendamento + ' ' + horaEntrada;
+    }
+  }
+
+  // Adiciona os eventos de mudança nos campos
+  document.getElementById("data_agendamento").addEventListener("input", atualizarDataAgendamento);
+  document.getElementById("hora_agendamento").addEventListener("input", atualizarDataAgendamento);
+</script>
+
+{% endblock %}

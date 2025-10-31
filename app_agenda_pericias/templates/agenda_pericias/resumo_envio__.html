@@ -1,0 +1,42 @@
+{% extends 'agenda_pericias/base.html' %}
+{% block content %}
+<h2>Resumo do Envio</h2>
+
+<h4>Enviados ({{ resumo.enviados|length }})</h4>
+<ul>
+  {% for item in resumo.enviados %}
+    <li>{{ item.nome }} - {{ item.email }} ({{ item.count }} perícias)</li>
+  {% empty %}
+    <li>Nenhum e-mail enviado.</li>
+  {% endfor %}
+</ul>
+
+<h4>Sem e-mail ({{ resumo.sem_email|length }})</h4>
+<ul>
+  {% for item in resumo.sem_email %}
+    <li>{{ item.nome }}</li>
+  {% empty %}
+    <li>Nenhum.</li>
+  {% endfor %}
+</ul>
+
+<h4>Sem perícias ({{ resumo.sem_pericias|length }})</h4>
+<ul>
+  {% for item in resumo.sem_pericias %}
+    <li>{{ item.nome }} - {{ item.email }}</li>
+  {% empty %}
+    <li>Nenhum.</li>
+  {% endfor %}
+</ul>
+
+<h4>Erros ({{ resumo.erros|length }})</h4>
+<ul>
+  {% for item in resumo.erros %}
+    <li>{{ item.nome }} - {{ item.error }}</li>
+  {% empty %}
+    <li>Nenhum erro.</li>
+  {% endfor %}
+</ul>
+
+<a href="{% url 'enviar_pauta' %}" class="btn btn-secondary">Voltar</a>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'agenda_pericias/base.html' %}
+{% block content %}
+{% load static %}
+
+{% if messages %}
+    <div class="alert alert-danger">
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<head>
+    <title>Editar Pedido</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .column {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            width: 20%;
+        }
+        .column label {
+            display: block;
+            margin-top: 10px;
+        }
+        .column input {
+            width: 80%;
+        }
+    </style>
+</head>
+<h1 style="text-align: center; font-size: 25px; margin-top: 1%; color: black;">Atualização de Andamento</h1>
+<div class="container" style="width: 65%;margin-left: 15%;">
+    <table>
+        <th>
+            <a style="text-align: center; font-size: 20px; color: black;">Edição de Perícia</a>
+        </th>    
+    </table>
+</div> 
+<br>
+<form method="POST">
+	<div class="container" style="width: 65%;margin-left: 15%;">
+        {% csrf_token %}
+        <table class="table table-bordered table-striped" style="font-size: 15px; white-space: nowrap">
+            <div style="margin: 20px 0;">
+                <tr style="vertical-align: middle;"> 
+                    <th hidden></th>
+                    <th style="text-align: center;">Hora Entrada</th>
+                    <th style="text-align: center;">Hora Saída</th>
+                    <th></th>
+                </tr>
+                <tr tr style="font-size: 13px; line-height: 1px; text-rendering: auto; vertical-align: middle;">
+                    <td hidden>{{ form.id }}</td>
+                    <td style="text-align: center;">{{form.hora_entrada}}</td>
+                    <td style="text-align: center;">{{form.hora_saida}}</td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        <a>
+                            <button type="submit" class="btn btn-primary btn-sm">Salvar/Voltar</button>
+                        </a>
+                    </td>
+                </tr>
+            </div>
+        </table>
+	</div>
+</form>
+
+<script>
+    $(document).ready(function() {
+        $('#id_hora_entrada, #id_hora_saida').mask('00:00'); 
+    });
+</script>
+{% endblock %}

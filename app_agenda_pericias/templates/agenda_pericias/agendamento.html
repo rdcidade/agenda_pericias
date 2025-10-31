@@ -1,0 +1,184 @@
+{% extends 'agenda_pericias/base.html' %}
+{% block content %}
+{% load static %} <!-- Nova linha que carrega os arquivos estáticos -->
+
+
+<div class="container-fluid" style="align-content: center; margin: auto; width: 100%; margin-right: 10px; padding-top: 5%;">
+    <h2 style="text-align: center; margin-top: 10px; font-size: 25px">Agendamento</h2>
+    <form style="margin-top: 10px; margin-left: 10px; margin-right: 10px;" class="form-control-sm" name="form_agendamento" id="formAgendamento" method="post">  
+        {% csrf_token %}
+        <div class="row g-1" style="margin-right: 10px;">
+            <div class="col-sm-1" style="width: 115px; min-width: 15px;"> 
+                <label class="form-label">Data:</label>
+                <input class="form-control form-control-sm" type="text" style="width: 110px; height: 30px;" name="data_agendamento" id="data_agendamento">
+            </div>
+            <div class="col-sm-1" style="width: 75px; min-width: 20px;"> 
+                <label hidden >Nº:</label>    
+                <input hidden type="text" name="ordem" id="ordem">
+                <label class="form-label">Hora:</label>    
+                <select id="hora" class="form-control" style="height: 35px;" name="hora" onchange="atualizarOrdem()">
+                    <option selected></option>
+                    <option value="13:00">13:00</option>
+                    <option value="13:30">13:30</option>
+                    <option value="14:00">14:00</option>
+                    <option value="14:30">14:30</option>
+                    <option value="15:00">15:00</option>
+                    <option value="15:30">15:30</option>
+                    <option value="16:00">16:00</option>
+                    <option value="16:30">16:30</option>
+                </select>
+            </div>
+            <div class="col-md-2" style="width: 255px;" >         
+                <label class="form-label">Nome:</label>    
+                <input class="form-control" style="width: 250px; height: 30px;" type="text" name="nome" id="nome" required>
+            </div>
+            <div class="col-md-2"  style="width: 195px;"> 
+                <label class="form-label">Documento:</label>    
+                <input class="form-control" style="width: 190px; height: 30px;" type="text" name="documento" id="documento" required>
+            </div>
+            <div class="col-md-1"  style="width: 150px;">   
+                <label class="form-label">Telefone:</label>    
+                <input class="form-control" style="width: 145px; height: 30px;" type="text" name="telefone" id="telefone" required>
+            </div>
+            <div class="col-md-1" style="width: 240px;">         
+                <label class="form-label">Observação:</label>    
+                <input class="form-control" style="width: 235px; height: 30px;" type="text" name="observacao", id="observacao" required>
+            </div>
+            <div class="col-sm-1"> 
+                <label class="form-label">Tipo:</label>    
+                <select id="tipo_agendamento" class="form-control" style="height: 35px;" name="tipo_agendamento" required>
+                    <option selected>Escolher...</option>
+                    <option value="Atermação">Atermação</option>
+                    <option value="JEF">JEF</option>
+                </select>
+            </div>
+            <div class="col-sm-1" style="text-align: center; width: 30px;">
+                <label class="form-label"> . </label><br> 
+                <button type="submit" class="btn btn-primary btn-sm" style="text-align: center; height: 30px;">OK</button>
+                <a><input hidden type="text" name="id_unidade" id="id_unidade" value='{{ unidade }}'></a> 
+            </div>       
+        </div>    
+    </form>
+    {% if messages %}
+        <div style="text-align: center; color: crimson;">
+            {% for message in messages %}
+                <a>{{ message }}</a>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+</div>
+<br>
+<div class="container-fluid">      
+    <form method="post">
+        {% csrf_token %}
+        <table class="table table-bordered table-striped" data-toggle=”table”>
+            <tr style="text-align:center; vertical-align: middle;">
+                <th hidden>id</th>
+                <th>Tipo</th>
+                <th>Data</th>
+                <th>Ordem</th>
+                <th>Hora</th>
+                <th>Nome</th>
+                <th>Documento</th>
+                <th>Telefone</th>
+                <th>Observação</th>
+                <th></th>
+            </tr>
+                {% for agendamento in agendamentos %}
+                <tr style="font-size: 15px; line-height: 1px; text-rendering: auto; vertical-align: middle;">
+                <td hidden>{{ agendamento.id }}</td>
+                <td style="text-align: center;">{{ agendamento.tipo_agendamento }}</td>
+                <td style="text-align: center;">{{ agendamento.data_agendamento }}</td>
+                <td style="text-align: center;">{{ agendamento.ordem }}</td>
+                <td style="text-align: center;">{{ agendamento.hora }}</td>
+                <td>{{ agendamento.nome }}</td>
+                <td>{{ agendamento.documento }}</td>
+                <td style="text-align: center;">{{ agendamento.telefone }}</td>
+                <td>{{ agendamento.observacao }}</td>
+                <td style="text-align: center;">
+                    <a href="{% url 'deletar_agendamento' agendamento.id %}" onclick="return confirm('Tem certeza que deseja excluir este agendamento?')"><img src="{% static 'images/excluir.png' %}" style="max-width: 15px; max-height: 15px; border: 0px;"></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+</div>
+
+<footer>
+<form method="GET">   
+    <div position="fixed" class="container-fluid">
+        <span position="fixed" class="navbar-brand mb-0 h1">
+            <a style="text-decoration: none;color: white; font-size:small;" >Data: <input type="text" name="search" id="search" style="width: 120px; height: 25px; text-align: center;"></a>
+            <a style="text-decoration: none;color: white; font-size:small;" >Tipo: <select id="search1"  name="search1" style="width: 120px; height: 25px;">
+                <option selected></option>
+                <option value="Atermação">Atermação</option>
+                <option value="JEF">JEF</option>
+            </select> <button class="btn btn-primary btn-sm" style="height: 25px;" type="submit" onclick="copiarValor()">Buscar/Limpar</button></a>
+            
+        </span>
+    </div>
+</form>
+</footer>
+
+<script>
+    function atualizarOrdem() {
+        var horaSelecionada = document.getElementById("hora").value;
+        var ordemCampo = document.getElementById("ordem");
+
+        // Definir os valores de ordem baseados na hora selecionada
+        switch (horaSelecionada) {
+            case "13:00":
+                ordemCampo.value = "1";
+                break;
+            case "13:30":
+                ordemCampo.value = "2";
+                break;
+            case "14:00":
+                ordemCampo.value = "3";
+                break;
+            case "14:30":
+                ordemCampo.value = "4";
+                break;
+            case "15:00":
+                ordemCampo.value = "5";
+                break;
+            case "15:30":
+                ordemCampo.value = "6";
+                break;
+            case "16:00":
+                ordemCampo.value = "7";
+                break;
+            case "16:30":
+                ordemCampo.value = "8";
+                break;
+            default:
+                ordemCampo.value = ""; // Limpar o campo se nenhuma hora correspondente for encontrada
+                break;
+        }
+    }
+</script>
+
+<script> // mascara de entrada
+    $(document).ready(function(){
+        $('#data_agendamento').mask('00/00/0000');
+    });
+</script>
+
+<script> // armazenar o valor no input
+    function copiarValor() {
+        var input1 = document.getElementById('search').value;
+      //  document.getElementById('search_recebe').value = input1;
+        localStorage.setItem('input1Value', input1);        
+    }
+        // Carregar o valor salvo ao carregar a página
+        window.onload = function() {
+            var savedValue = localStorage.getItem('input1Value');
+            if (savedValue !== null) {
+                document.getElementById('search').value = savedValue;
+            }
+        }    
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'agenda_pericias/base.html' %}
+{% block content %}
+{% load static %} <!-- Nova linha que carrega os arquivos estáticos -->
+
+<!-- Exibição dos dados agrupados em tabela -->
+<div class="container-fluid" style="padding-top: 5%; padding-bottom: 5%;">
+    <h2 style="text-align: center; margin-top: 10px; font-size: 25px; color: black;">Perícias por Data/Mês</h2>
+    <p style="text-align: center; margin-top: 10px; font-size: 15px;">(Aplicar o filtro por mês no rodapé)</p>
+
+    <!--    <h3>{{ data_marcada|date:"d/m/Y" }} - Perito: {{ perito }}</h3> -->
+    <div class="container">
+    {% for data_marcada, perito, registros in dados_agrupados %}
+        <div style="text-align: center; font-size: 20px; color: red;">Dia: {{ data_marcada }}
+        </div>    
+        </a>
+        <table class="table table-bordered table-striped" style="font-size: 11px; white-space: nowrap">
+            <p style="text-align:left; vertical-align: middle;"><b>Perito: {{ perito }}</b></p>
+            <tr>
+                <th style="text-align:center; vertical-align: middle;font-size: 17px">Data Perícia</th>
+                <th style="text-align:center; vertical-align: middle;font-size: 17px">Periciado</th>
+                <th style="text-align:center; vertical-align: middle;font-size: 17px">Processo</th>
+                <th style="text-align:center; vertical-align: middle;font-size: 17px">Especialidade</th>
+            </tr>
+            {% for reg in registros %}
+            <tr style="font-size: 13px; line-height: 1px; text-rendering: auto; vertical-align: middle;">
+                <td>{{ reg.data_pericia }}</td>
+                <td>{{ reg.periciado }}</td>
+                <td>{{ reg.processo }}</td>
+                <td>{{ reg.especialidade }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endfor %}    
+    </div>
+</div>
+<footer>
+<!-- Formulário para filtrar por mês e gerar PDF -->
+    <form method="GET" action="">   
+        <div position="fixed" class="container-fluid">
+            <a style="text-decoration: none;color: white; font-size:small;" >Filtrar por Mês (YYYY-MM): <input type="text" id="mes" name="mes" value="{{ mes_filtro }}" style="width: 120px; height: 25px; text-align: center; color: black;" placeholder="2024-01"></a>
+            <a><button class="btn btn-primary btn-sm" style="height: 25px;" type="submit">Filtrar</button></a>
+            <a><button class="btn btn-primary btn-sm" style="height: 25px;" type="submit" formaction="{% url 'gerar_pdf' %}">Gerar PDF</button></a>
+        </div>
+    </form>
+</footer>
+</body>
+<script>
+    $('#mes').mask('0000-00');
+</script>
+
+{% endblock %}

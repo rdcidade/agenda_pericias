@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="pt-br">
+  {% load static %} <!-- Nova linha que carrega os arquivos estáticos -->
+    <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+
+      <!-- Bootstrap CSS -->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+      <!-- Core theme CSS (includes Bootstrap)-->
+      <link rel="stylesheet" type="text/css" href="{% static 'css/styles_login.css' %}" />
+
+      <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+      <link rel="icon" type="image/x-icon" href="{% static 'images/favicon_1.ico' %}" />      
+      <style>
+        /* Estilos opcionais para o rodapé */
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 5px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+      </style>
+      <title>Agenda de Pericias</title>
+    </head>
+      <body>
+        <main>
+          <nav style="background-color: black !important;" class="navbar navbar-light bg-light">
+            <div class="container-flex">
+              <a target="_parent"><img src="{% static 'images/logo.png' %}"style="max-width: 80%; max-height: 80%; " alt="Logo Agenda de Pericias" /></a>
+              <a style="text-decoration: none;color: white; font-size:medium;" href= "{% url 'login' %}" target="_parent">Login</a> |                
+            </div>
+          </nav>
+            <video loop muted autoplay poster="" class="fullscreen-bg_video">
+              <source src="{% static 'images/video_background.mp4' %}" type="video/mp4">
+            </video>
+          <!-- Optional JavaScript; choose one of the two! -->
+
+          <!-- Option 1: Bootstrap Bundle with Popper -->
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+          <!-- Option 2: Separate Popper and Bootstrap JS -->
+          <!--
+          <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+          -->
+        </main>
+          <div class="container">
+
+            <!-- Formulários -->
+            <div class="content">
+
+            <!-- FORMULÁRIO DE CADASTRO -->
+            <div id="cadastro" class="form-section" style="display:none; text-align: center;">
+              <form method="post" id="form-cadastro">
+                {% csrf_token %} 
+                <h1>Cadastro</h1> 
+                {% if messages %}
+                  <div style="text-align: center; color: crimson;">
+                    {% for message in messages %}
+                      <a>{{ message }}</a>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+                <p> 
+                  <label for="cpf">Seu CPF</label>
+                  <input id="cpf" name="cpf" required="required" type="text" placeholder="CPF" maxlength="11" style="width: min-content; height: 30px;" />
+                </p>
+                <p> 
+                  <label for="nome">Seu nome</label>
+                  <input id="nome" name="nome" required="required" type="text" placeholder="Nome completo" style="width: min-content; height: 30px;" />
+                  <input hidden id="usuario" name="usuario" type="text" />
+                  <input hidden type="checkbox" name="perito" id="perito" value="True" /> 
+                </p>
+                <p> 
+                  <label for="email">Seu e-mail</label>
+                  <input id="email" name="email" required="required" type="text" placeholder="fulano@email.com" style="width: min-content; height: 30px;" />
+                </p>
+                <p> 
+                  <label for="senha">Sua senha</label>
+                  <input id="senha" name="senha" required="required" type="password" placeholder="Senha" style="width: min-content; height: 30px;" />
+                </p>
+                <p> 
+                  <label for="unidade">Sua unidade</label>
+                  <select style="width: 200px; height: 30px; border: 1px solid #b2b2b2; font-size: small;" name="unidade" id="unidade">
+                    {% for forum in foruns %}
+                      <option value="{{ forum.id }}">{{ forum.subsecao }}</option>
+                    {% endfor %}
+                  </select>        
+                </p>
+                <p>
+                  <input type="submit" value="Cadastrar" style="width: 50%;"/> 
+                </p>
+                <p class="link">  
+                  Já tem conta?
+                  <a href="#" onclick="showSection('login')">Ir para Login</a>
+                </p>
+              </form>
+            </div>
+
+              <!-- FORMULÁRIO DE LOGIN -->
+              <div id="login" class="form-section" style="text-align: center;">
+                <form method="post" action="{% url 'login' %}"> 
+                  {% csrf_token %}
+                  <h1>Login</h1> 
+                  <p> 
+                    <label for="cpf_login">CPF</label>
+                    <input id="cpf_login" name="cpf_login" required="required" type="text" placeholder="ex. CPF" style="width: min-content; height: 30px;"/>
+                  </p>
+                  <p> 
+                    <label for="senha_login">Senha</label>
+                      <input id="senha_login" name="senha_login" maxlength="11" required="required" type="password" placeholder="ex. senha" style="width: 240px; height: 30px;" />
+                        <span id="toggleSenha" onclick="togglePassword()" 
+                              style="position: relative; right: 30px; cursor: pointer; user-select: none;">
+                          👁️
+                        </span>
+                  </p>
+                  <p> 
+                    <label style="display:none;" for="label-unidade" id="label-unidade_login">Unidade</label>
+                    <select style="width: 230px; height: 30px; border: 1px solid #b2b2b2; font-size: small; display: none; margin-left: 90px; " name="unidade_login" id="unidade_login">
+                      {% for forum in foruns %}
+                        <option value="{{ forum.id }}">{{ forum.subsecao }}</option>
+                      {% endfor %}
+                    </select>        
+                  </p>
+                  <p> 
+                    <input type="checkbox" name="manterlogado" id="manterlogado" value="" /> 
+                    <label for="manterlogado">Manter-me logado</label>
+                  </p>
+                  <p> 
+                    <input type="submit" value="Logar" /> 
+                  </p>
+                  <p class="link">
+                    Ainda não tem conta?
+                    <a href="#" onclick="showSection('cadastro')">Cadastre-se</a>
+                  </p>
+                </form>
+              </div>
+            </div>
+          </div>
+          <script>
+            // Função para atualizar o campo 'usuario' com o primeiro nome
+            function atualizarUsuario() {
+              const nomeInput = document.getElementById("nome");
+              const usuarioInput = document.getElementById("usuario");
+
+              if (nomeInput && usuarioInput) {
+                const nomeCompleto = nomeInput.value.trim();
+                const primeiroNome = nomeCompleto.split(" ")[0] || "";
+                usuarioInput.value = primeiroNome;
+              }
+            }
+
+            // Atualiza o campo 'usuario' quando o usuário digitar no campo 'nome'
+            document.getElementById("nome").addEventListener("input", atualizarUsuario);
+
+            // Observa alterações automáticas no valor do campo 'nome' (ex: preenchimento via script)
+            const nomeInput = document.getElementById("nome");
+            const observer = new MutationObserver(atualizarUsuario);
+            observer.observe(nomeInput, { attributes: true, childList: true, subtree: true });
+
+            // Garante atualização também se o valor for alterado diretamente por script (sem eventos)
+            setInterval(() => {
+              atualizarUsuario();
+            }, 500); // Verifica a cada meio segundo se houve mudança
+          </script>
+
+          <!-- SCRIPT PARA ALTERNAR SEÇÕES E CONTROLAR HASH -->
+          <script>
+            // Função para mostrar a seção desejada
+            function showSection(sectionId) {
+              const sections = document.querySelectorAll('.form-section');
+              sections.forEach(s => s.style.display = 'none'); // Esconde todas
+              document.getElementById(sectionId).style.display = 'block'; // Mostra a desejada
+              window.location.hash = sectionId; // Atualiza o hash na URL
+            };
+
+            // Detecta hash na URL ao carregar a página
+            window.addEventListener('load', function() {
+              const hash = window.location.hash.replace('#', '');
+              if (hash && document.getElementById(hash)) {
+                showSection(hash);
+              } else {
+                showSection('login'); // seção padrão
+              }
+            });
+
+            // Após o envio do formulário de cadastro (postback Django),
+            // mantém a seção 'cadastro' visível se houver mensagens (sucesso/erro)
+            window.addEventListener('DOMContentLoaded', function() {
+              const mensagemExiste = document.querySelector('.messages') || 
+                                    document.querySelector('[style*="color: crimson;"]');
+              if (mensagemExiste) {
+                showSection('cadastro');
+              }
+            });
+          </script>
+          <script>
+            function togglePassword() {
+              const input = document.getElementById("senha_login");
+              const toggle = document.getElementById("toggleSenha");
+
+              if (input.type === "password") {
+                input.type = "text";
+                toggle.textContent = "🙈"; // muda o ícone
+              } else {
+                input.type = "password";
+                toggle.textContent = "👁️";
+              }
+            }
+          </script>
+          <script>
+          document.getElementById('cpf').addEventListener('blur', function() {
+            const cpf = this.value.trim();
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            if (cpf.length < 11) return; // validação básica
+
+            fetch("{% url 'verificar_cpf' %}", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrfToken,
+              },
+              body: JSON.stringify({ cpf: cpf })
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.existe_usuario) {
+                alert("Usuário já cadastrado neste CPF!");
+                document.getElementById('nome').value = '';
+                document.getElementById('perito').checked = false;
+              } else if (data.encontrado_perito) {
+                document.getElementById('nome').value = data.nome_perito;
+                document.getElementById('perito').checked = true;
+              } else {
+                document.getElementById('nome').value = '';
+                document.getElementById('perito').checked = false;
+              }
+            })
+            .catch(err => console.error('Erro ao verificar CPF:', err));
+          });
+          </script> 
+          <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const cpfInput = document.getElementById('cpf_login'); // 👈 corrigido aqui
+                const labelUnidade = document.getElementById('label-unidade_login');
+                const selectUnidade = document.getElementById('unidade_login');
+
+                if (!cpfInput) {
+                    console.warn('Campo CPF não encontrado!');
+                    return;
+                }
+
+                cpfInput.addEventListener('blur', function () {
+                    const cpf = cpfInput.value.trim();
+                    if (cpf.length < 11) {
+                        labelUnidade.style.display = 'none';
+                        selectUnidade.style.display = 'none';
+                        return;
+                    }
+
+                    fetch(`/verificar_perito/?cpf_login=${cpf}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.is_perito) {
+                                labelUnidade.style.display = 'block';
+                                selectUnidade.style.display = 'block';
+                            } else {
+                                labelUnidade.style.display = 'none';
+                                selectUnidade.style.display = 'none';
+                            }
+                        })
+                        .catch(error => console.error('Erro ao verificar perito:', error));
+                });
+            });
+
+          </script>
+          <script>
+            document.getElementById('nome').addEventListener('input', function() {
+              var start = this.selectionStart;
+              var end = this.selectionEnd;
+              this.value = this.value.toUpperCase();
+              this.setSelectionRange(start, end);
+            });
+          </script>
+      </body>
+</html>

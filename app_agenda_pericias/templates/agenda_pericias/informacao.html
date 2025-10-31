@@ -1,0 +1,46 @@
+{% extends 'agenda_pericias/base.html' %}
+{% block content %}
+<title>Informação</title>
+<body>
+    <h1 class="p-3">Informação</h1>
+    <div class="container">
+        <form class="row g-3"name="form_informacao_pericias" id="formInformar"> 
+            {% csrf_token %}
+            <label for="data_pericia">Data da Perícia:</label>
+            <input type="date" id="data_pericia" name="data_pericia" required><br><br>
+
+            <label for="perito">Perito:</label>
+            <input type="text" id="perito" name="perito" required><br><br>
+
+            <label for="periciado">Periciado:</label>
+            <input type="text" id="periciado" name="periciado" required><br><br>
+
+            <label for="cpf_parte">CPF da Parte:</label>
+            <input type="text" id="cpf_parte" name="cpf_parte" required><br><br>
+
+            <label for="processo">Processo:</label>
+            <input type="text" id="processo" name="processo" required><br><br>
+
+            <label for="especialidade">Especialidade:</label>
+            <input type="text" id="especialidade" name="especialidade" required><br><br>
+
+            <label for="situacao_pericia">Situação da Perícia:</label>
+            <input type="text" id="situacao_pericia" name="situacao_pericia" required><br><br>
+
+            <label for="compareceu">Compareceu à Perícia:</label>
+            <select id="compareceu" name="compareceu" required>
+                <option value="Sim">Sim</option>
+                <option value="Não">Não</option>
+            </select><br><br>
+
+            <label for="hora_entrada">Hora de Entrada:</label>
+            <input type="time" id="hora_entrada" name="hora_entrada"><br><br>
+
+            <label for="hora_saida">Hora de Saída:</label>
+            <input type="time" id="hora_saida" name="hora_saida"><br><br>
+
+            <input type="submit" value="Cadastrar">
+        </form>
+    </div>    
+</body>
+{% endblock %}

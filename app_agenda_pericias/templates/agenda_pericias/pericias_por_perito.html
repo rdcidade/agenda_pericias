@@ -1,0 +1,46 @@
+{% extends 'agenda_pericias/base.html' %}
+{% block content %}
+{% load static %}
+<div class="container" style="padding-top: 5%; padding-bottom: 5%; width: 40%;">
+    <h2 style="text-align: center; margin-top: 10px; font-size: 25px; color: black;">Perícias Realizadas por Perito</h2>
+        <table class="table table-bordered" style="font-size: 15px; white-space: nowrap">
+            <thead>
+                <tr style="font-weight: bold; background-color: cadetblue;">
+                    <th style="text-align:center; vertical-align: middle;">Mês</th>
+                    <th style="text-align:center; vertical-align: middle;">Perito</th>
+                    <th style="text-align:center; vertical-align: middle;">Total de<p>Perícias</p></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if pericias_por_mes %}
+                    {% for pericia_mes in pericias_por_mes %}
+                        {% for perito in pericia_mes.peritos %}
+                            <tr style="font-size: 11px; line-height: 1px; text-rendering: auto; vertical-align: middle; text-align: center;">
+                                {% if forloop.first %}
+                                    <td style="font-size: 13px; text-rendering: auto; vertical-align: middle; text-align: center;font-weight: bold;" rowspan="{{ pericia_mes.peritos|length }}">{{ pericia_mes.mes|date:"F Y" }}</td>
+                                {% endif %}
+                                <td>{{ perito.perito }}</td>
+                                <td>{{ perito.total }}</td>
+                            </tr>
+                        {% endfor %}
+                        <tr style="font-weight: bold; background-color: lightblue;">
+                            <td colspan="2" style="text-align:right;">Total de Perícias em {{ pericia_mes.mes|date:"F Y" }}:</td>
+                            <td style="text-align:center;">{{ pericia_mes.total_mes }}</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="3">Nenhuma perícia realizada encontrada.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+            <tfoot>
+                <tr style="font-weight: bold; background-color: cadetblue;">
+                    <td colspan="2" style="text-align:right;">Total de Perícias no ano:</td>
+                    <td style="text-align:center;">{{ total_anual }}</td>
+                </tr>
+            </tfoot>
+        </table>
+</div>
+
+{% endblock %}

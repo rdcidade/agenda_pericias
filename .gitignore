@@ -1,0 +1,24 @@
+# Arquivos a serem ignorados 
+# Ambiente virtual
+venv/
+env/
+
+# Arquivos temporários e cache do Python
+__pycache__/
+*.py[cod]
+*.log
+
+# Configurações locais
+*.sqlite3
+*.env
+.env
+
+# Diretórios de build e IDEs
+.idea/
+.vscode/
+*.bak
+
+# Arquivos gerados por Django
+media/
+staticfiles/
+

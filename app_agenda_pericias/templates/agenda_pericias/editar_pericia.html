@@ -1,0 +1,62 @@
+{% extends 'agenda_pericias/base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container-fluid py-5">
+    <h2 class="text-center mb-2" style="font-size: 26px; color: black;">Perícias por Data / Mês</h2>
+    <p class="text-center mb-4" style="font-size: 15px;">(Aplique o filtro por mês no rodapé)</p>
+
+    <div class="container">
+        {% if dados_agrupados %}
+            {% for data_marcada, perito, registros in dados_agrupados %}
+                <div class="mb-4">
+                    <h4 class="text-center" style="color: red;">Dia: {{ data_marcada }}</h4>
+                    <p class="fw-bold" style="font-size: 15px;">Perito: {{ perito }}</p>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped align-middle text-center">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Data Perícia</th>
+                                    <th>Periciado</th>
+                                    <th>Processo</th>
+                                    <th>Especialidade</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for reg in registros %}
+                                <tr>
+                                    <td>{{ reg.data_pericia }}</td>
+                                    <td>{{ reg.periciado }}</td>
+                                    <td>{{ reg.processo }}</td>
+                                    <td>{{ reg.especialidade }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-center mt-5" style="font-size: 16px;">Nenhuma perícia encontrada para o período selecionado.</p>
+        {% endif %}
+    </div>
+</div>
+
+<footer class="fixed-bottom bg-light p-2 text-center shadow-lg">
+    <form method="GET" action="">
+        <label for="mes" class="me-2 fw-bold">Filtrar por Mês (YYYY-MM):</label>
+        <input type="text" id="mes" name="mes" value="{{ mes_filtro }}" 
+               class="text-center rounded border border-secondary"
+               style="width: 120px; height: 28px; color: black;" placeholder="2024-01">
+
+        <button type="submit" class="btn btn-primary btn-sm ms-2">Filtrar</button>
+        <button type="submit" formaction="{% url 'gerar_pdf' %}" class="btn btn-success btn-sm ms-2">Gerar PDF</button>
+    </form>
+</footer>
+
+<script src="{% static 'js/jquery.mask.min.js' %}"></script>
+<script>
+    $('#mes').mask('0000-00');
+</script>
+
+{% endblock %}

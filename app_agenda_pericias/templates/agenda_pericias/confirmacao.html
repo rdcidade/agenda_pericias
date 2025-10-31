@@ -1,0 +1,97 @@
+{% extends 'agenda_pericias/base.html' %}
+{% block content %}
+<head>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            margin-right: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+</head>
+<body>
+    <h1>Informações de Cadastro</h1>
+    <form method="post" href="{% url 'agendar_pericias' %}">
+    {% csrf_token %}
+        <table>
+            <tr>
+                <th>Data</th>
+                <th>Perito</th>
+                <th>Periciado</th>
+                <th>CPF da Parte</th>
+                <th>Processo</th>
+                <th>Especialidade</th>
+                <th>Situação da Perícia</th>
+                <th>Compareceu?</th>
+                <th>Hora Entrada</th>
+                <th>Hora Saída</th>
+            </tr>
+            <tr>
+                <td id="data_pericia"></td>
+                <td id="perito"></td>
+                <td id="periciado"></td>
+                <td id="cpf_parte"></td>
+                <td id="processo"></td>
+                <td id="especialidade"></td>
+                <td id="situacao_pericia"></td>
+                <td id="compareceu_pericia"></td>
+                <td id="hora_entrada"></td>
+                <td id="hora_saida"></td>
+
+                <td>
+                    <button class="btn" onclick="editarCadastro()">Editar</button>
+                </td>
+                <td>
+                    <button class="btn" type="submit">Confirmar</button>
+                </td>    
+            </tr>
+        </table>
+    </form>    
+    <script>
+        // Recuperar as informações temporariamente armazenadas
+        document.getElementById('data_pericia').textContent = localStorage.getItem('data_pericia');
+        document.getElementById('perito').textContent = localStorage.getItem('perito');
+        document.getElementById('periciado').textContent = localStorage.getItem('periciado');
+        document.getElementById('processo').textContent = localStorage.getItem('processo');
+        document.getElementById('especialidade').textContent = localStorage.getItem('especialidade');
+        document.getElementById('situacao_pericia').textContent = localStorage.getItem('situacao_pericia');
+        document.getElementById('hora_entrada').textContent = localStorage.getItem('hora_entrada');
+        document.getElementById('hora_saida').textContent = localStorage.getItem('hora_saida');
+
+        // Função para editar o cadastro (retornar para a tela de cadastro)
+        function editarCadastro() {
+            window.location.href = "{% url 'agendar_pericias' %}"; // Altere para o nome do arquivo da tela de cadastro
+        }
+
+        // Função para confirmar o cadastro (ir para a página de confirmação)
+        function confirmarCadastro() {
+                
+                window.location.href="{% url 'listagem_pericias' %}";
+        }
+    </script>
+</body>
+{% endblock %}

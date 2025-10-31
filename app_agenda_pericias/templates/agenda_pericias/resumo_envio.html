@@ -1,0 +1,76 @@
+{% extends 'agenda_pericias/base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="container-fluid" style="padding-top: 3%; padding-bottom: 5%;">
+    <h2 style="text-align: center; font-size: 25px; color: black;">Resumo do Envio de Pautas</h2>
+    <p style="text-align: center; font-size: 15px;">(Confira abaixo o resultado do envio de e-mails para os peritos)</p>
+
+    <div class="container" style="margin-top: 30px;">
+        <!-- Enviados -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Enviados ({{ resumo.enviados|length }})</h5>
+            </div>
+            <div class="card-body">
+                {% if resumo.enviados %}
+                    <ul class="list-group list-group-flush">
+                        {% for item in resumo.enviados %}
+                            <li class="list-group-item shadow-sm">
+                                <b>{{ item.nome }}</b> - {{ item.email }} 
+                                <span class="badge bg-primary float-end">{{ item.count }} perícias</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">Nenhum e-mail enviado.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Sem perícias -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">Sem perícias ({{ resumo.sem_pericias|length }})</h5>
+            </div>
+            <div class="card-body">
+                {% if resumo.sem_pericias %}
+                    <ul class="list-group list-group-flush">
+                        {% for item in resumo.sem_pericias %}
+                            <li class="list-group-item">{{ item.nome }} - {{ item.email }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">Nenhum.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Erros -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">Erros ({{ resumo.erros|length }})</h5>
+            </div>
+            <div class="card-body">
+                {% if resumo.erros %}
+                    <ul class="list-group list-group-flush">
+                        {% for item in resumo.erros %}
+                            <li class="list-group-item">
+                                <b>{{ item.nome }}</b> — <span class="text-danger">{{ item.error }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">Nenhum erro.</p>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'enviar_pauta' %}" class="btn btn-secondary btn-sm" style="height: 30px;">Voltar</a>
+    </div>
+</div>
+
+{% endblock %}

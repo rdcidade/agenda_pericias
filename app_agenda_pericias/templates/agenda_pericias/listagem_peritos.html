@@ -1,0 +1,30 @@
+{% extends 'agenda_pericias/base.html' %}
+{% block content %}
+{% load static %} <!-- Nova linha que carrega os arquivos estáticos -->  
+<div class="container" style="padding-top: 5%; padding-bottom: 5%; width: 40%;">
+
+    <h1>Especialidades</h1>
+    <ul>
+        {% for especialidade in lista_especialidades %}
+            <li>{{ especialidade }}</li>
+        {% endfor %}
+    </ul>
+
+    <h1>Peritos</h1>
+    <ul>
+        {% for perito in peritos %}
+            <li>{{ perito }}</li>
+        {% endfor %}
+    </ul>
+
+    <h1>Peritos por Especialidade</h1>
+    {% for especialidade, peritos in peritos_por_especialidade.items %}
+        <h3>{{ especialidade }}</h3>
+        <ul>
+            {% for perito in peritos %}
+                <li>{{ perito }}</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</div>
+{% endblock %}
