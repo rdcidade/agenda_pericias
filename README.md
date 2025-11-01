@@ -46,6 +46,7 @@ Ferramentas utilizadas:
 **Hospedagem**
 
 * PythonAnywhere
+
 **API**
 
 * Gmail API
