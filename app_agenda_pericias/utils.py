@@ -80,6 +80,8 @@ def montar_corpo_perito(pericias, perito_nome, mes_ano_str):
             <th style="border: 1px solid #ddd; padding: 6px;">Local</th>
           </tr>
         </thead>
+        <hr>
+        <p>Por favor, não responda esse e-mail, pois esta é uma mensagem automática gerada pelo AGENDAPERICIAS (Sistema Envio de E-mail em Massa) e não deve ser respondida. Se precisar de ajuda, entre em contato com a Seção de Perícias.</p>
         <tbody>
     """
 
