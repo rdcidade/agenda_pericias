@@ -65,7 +65,7 @@ def login(request):
         try:
             usuario = tbl_usuarios.objects.get(cpf=cpf_login)
         except tbl_usuarios.DoesNotExist:
-            return render(request, 'login.html', {'erro': 'CPF não encontrado.'})
+            return render(request, 'agenda_pericias/erro_login.html', {'erro': 'CPF não encontrado.'})
 
         # Verifica se a senha digitada bate com a senha criptografada
         if check_password(senha_digitada, usuario.senha):
